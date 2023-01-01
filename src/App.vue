@@ -3,8 +3,11 @@
   <div class="main">
     <div class="new_year">Año Nuevo {{ new_year }}</div>
     <div class="cronometro">
-      <span v-if="day != 0">{{ day }} dias</span>
-      <span v-if="hour != 0">{{ hour }}:</span>{{ min }}:{{ second }}
+      <span v-if="day != 0">{{ day }} </span>
+      <span v-if="day != 0" class="text-day"> días </span>
+      <span v-if="hour != 0">{{ hour }}:</span>
+      <span v-if="min != 0">{{ min }}:</span>
+      {{ second }}
     </div>
     <div class="new_year_full">{{ new_date.toLocaleDateString('en-CA') }}</div>
   </div>
@@ -15,8 +18,9 @@ import { ref, onMounted } from 'vue';
 import ConfettiGenerator from "confetti-js";
 
 let current_date = new Date()
-let new_date = new Date(`${current_date.getFullYear() + 1}-1-01`)
+let new_date = new Date(`${(current_date.getFullYear() + 1)}-1-01`)
 
+const current_year = current_date.getFullYear();
 const new_year = ref(current_date.getFullYear() + 1)
 
 let confetti, timeObject;
@@ -30,10 +34,10 @@ function op_micro() {
   let op_date = new_date.getTime() - new Date().getTime()
   let time_second = (op_date / 1000)
 
-  second.value = parseInt(time_second % 60)
+  second.value = parseInt(time_second % 60) 
   min.value = parseInt(time_second / 60 % 60)
   hour.value = parseInt(time_second / 60 / 60 % 24)
-  day.value = parseInt(min.value / 60 / 24)
+  day.value = parseInt(time_second / (24*3600))
 
   if (day.value == 0 && hour.value == 0 && min.value == 0 && second.value == 0) {
     confetti.render();
@@ -61,6 +65,7 @@ onMounted(() => {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  overflow: hidden;
 }
 
 .new_year {
@@ -75,6 +80,10 @@ onMounted(() => {
 
 .new_year_full {
   font-size: 30px;
+}
+
+.text-day {
+  font-size: 40px;
 }
 
 .main {
