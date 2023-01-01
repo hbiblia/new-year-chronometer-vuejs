@@ -35,7 +35,7 @@ function op_micro() {
   hour.value = parseInt(time_second / 60 / 60 % 24)
   day.value = parseInt(min.value / 60 / 24)
 
-  if (day.value == 0 && hour.value == 0 && min.value == 0) {
+  if (day.value == 0 && hour.value == 0 && min.value == 0 && second.value == 0) {
     confetti.render();
     clearInterval(timeObject)
   }
