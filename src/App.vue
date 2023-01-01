@@ -1,21 +1,33 @@
 <template>
   <canvas id="canvas-confetti"></canvas>
   <div class="main">
-    <div class="new_year">Año Nuevo {{ new_year }}</div>
+    <div class="new_year">{{ language[0] }} {{ new_year }}</div>
     <div class="cronometro">
       <span v-if="day != 0">{{ day }} </span>
-      <span v-if="day != 0" class="text-day"> días </span>
+      <span v-if="day != 0" class="text-day"> {{ language[1] }} </span>
       <span v-if="hour != 0">{{ hour }}:</span>
       <span v-if="min != 0">{{ min }}:</span>
       {{ second }}
     </div>
-    <div class="new_year_full">{{ new_date.toLocaleDateString('en-CA') }}</div>
+    <div class="new_year_full">{{ new_date.toDateString() }}</div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import ConfettiGenerator from "confetti-js";
+
+let language_id = navigator.language.split('-')[0]
+let language_text = {
+  "es":['Año Nuevo', 'días'],
+  "en":['New Year','days'],
+  "fr":['Nouvelle année','jours'],
+}
+let language = language_text[language_id]
+
+if (language_text[language_id] == undefined){
+  language = language_text['es']
+}
 
 let current_date = new Date()
 let new_date = new Date(`${(current_date.getFullYear() + 1)}-1-01`)
